@@ -1,0 +1,29 @@
+[{"pk": 1, "model": "api.placa", "fields": {"nombre": "UNO", "pin_analogico": 6, "pin_digital": 12, "pin_pwm": 6}},
+
+ {"pk": 1, "model": "api.puerto", "fields": {"nombre": "/dev/ttyACM0"}},
+
+ {"pk": 1, "model": "api.tablero", "fields": {"placa": 1, "puerto": 1, "tablero" : 1,"descripcion": "Placa para planta baja"}},
+
+ {"pk": 1, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 8, "modo": "output"}},
+ {"pk": 2, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 2, "modo": "input"}},
+ {"pk": 3, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 3, "modo": "input"}},
+ {"pk": 4, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 9, "modo": "output"}},
+ {"pk": 5, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "analogo", "pin": 0, "modo": "input"}},
+ {"pk": 6, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "analogo", "pin": 1, "modo": "input"}},
+ {"pk": 7, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 10, "modo": "output"}},
+ {"pk": 8, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 4, "modo": "input"}},
+ {"pk": 9, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 11, "modo": "output"}},
+ {"pk": 10, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 12, "modo": "output"}},
+ {"pk": 11, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 5, "modo": "input"}},
+ {"pk": 12, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "digital", "pin": 6, "modo": "input"}},
+ {"pk": 13, "model": "api.pin_placa", "fields": {"tablero": 1, "tipo": "analogo", "pin": 2, "modo": "input"}},
+
+ {"pk": 1, "model": "api.combinacion_pin", "fields": {"pin_entrada": 2, "pin_salida": 1, "pin_movimiento": 13, "pin_manejo": "off_auto"}},
+ {"pk": 2, "model": "api.combinacion_pin", "fields": {"pin_entrada": 3, "pin_salida": 4, "pin_movimiento": null, "pin_manejo": null}},
+ {"pk": 3, "model": "api.combinacion_pin", "fields": {"pin_entrada": 5, "pin_salida": null, "pin_movimiento": null, "pin_manejo": null}},
+ {"pk": 4, "model": "api.combinacion_pin", "fields": {"pin_entrada": 6, "pin_salida": null, "pin_movimiento": null, "pin_manejo": null}},
+ {"pk": 5, "model": "api.combinacion_pin", "fields": {"pin_entrada": 8, "pin_salida": 7, "pin_movimiento": null, "pin_manejo": null}},
+ {"pk": 6, "model": "api.combinacion_pin", "fields": {"pin_entrada": 11, "pin_salida": 9, "pin_movimiento": null, "pin_manejo": null}},
+ {"pk": 7, "model": "api.combinacion_pin", "fields": {"pin_entrada": 12, "pin_salida": 10, "pin_movimiento": null, "pin_manejo": null}}]
+
+
