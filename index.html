@@ -1,0 +1,168 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Sisa API arduino by palichis</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Sisa API arduino</h1>
+        <p>Api para el manejo de placa arduino via web</p>
+
+        <p class="view"><a href="https://github.com/palichis/sisa">View the Project on GitHub <small>palichis/sisa</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/palichis/sisa/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/palichis/sisa/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/palichis/sisa">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>API SISA</h1>
+
+<p>Api para el manejor de placas arduino y arduino_mega</p>
+
+<p>Es necesario instalar pyfirmata, django, postgresql</p>
+
+<h1>Instalar</h1>
+
+<p>Descargar pyfirmata (<a href="https://github.com/tino/pyFirmata">https://github.com/tino/pyFirmata</a>)</p>
+
+<p>Según la distro que uses instalar django y postgres</p>
+
+<p>Crear la dase de datos en postgres pg_sisa</p>
+
+<p>cd /home/user/sisa</p>
+
+<p>modificar ./sisa/setting.py, según los parametros de la base de datos creada</p>
+
+<pre><code>DATABASES = {
+
+    'default': {
+
+    'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+
+        'NAME': 'pg_sisa',                      # Or path to database file if using sqlite3.
+
+        'USER': 'user_sisa',                      # Not used with sqlite3.
+
+        'PASSWORD': 'clave_sisa',                  # Not used with sqlite3.
+
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
+
+        'PORT': '5432',                      # Set to empty string for default. Not used with sqlite3.
+
+        }
+
+    }
+</code></pre>
+
+<h1>Configuración</h1>
+
+<p>Creamos la estructura de la base de datos</p>
+
+<pre><code>python manage.py syncdb
+</code></pre>
+
+<p>Se crea la estructura y llena tablas con ejemplos, para no llenar las tablas eliminamos la carpeta ./api/fixtures</p>
+
+<p>Las tablas que se crean son:</p>
+
+<p>placa: que nos permite definir el tipo de arduino a configurar, sus puertos digitales, analogos y pwm</p>
+
+<p>puerto: en que puerto del sistema está configurada, ejemplo linux /dev/ttyACM0</p>
+
+<p>tablero: tablero con el cual trabajaremos es decir que tipo de arduino y en el puerto que esta conectada</p>
+
+<p>pin_placa: configuración de cada pin de un tablero, modo (entrada o salida), tipo (digital, análogo).</p>
+
+<p>Combinacion_pin: Esta tabla define tipos de combinaciones que se tiene de ser el caso, que pin de salida controla un pin de entrada o pin de movimiento, y el tipo de manejo para el pin de movimiento en caso de configurarlo. ejm
+pinentrada2, queremos que al enviar un pulso electrico a 1, envíe una señal a pinsalida8 y cambie de estado, al igual que pinmovimiento, de acuerdo al modo que esté configurado. off_auto, es decir mientras pinmovimiento no reciba señal, el pin8, o en el que esté configurado cambiara de estado a 0 (apaga), en caso de configurarlo como on_auto, cuando pinmovimiento reciva una señal, pin8 o el que este configurado cambiará de estado a 1 (enciende).</p>
+
+<p>Arrancar el servidor</p>
+
+<pre><code>python manage.py runserver
+</code></pre>
+
+<h1>USO</h1>
+
+<p>Para usar el api, podremos enviar parámetros como recibir el estado de uno o todos los pines, para ello todos devuelve un json de la forma {"tablero":{"pin":"valor"}} ó si genera error {"error":"mesaje"}</p>
+
+<p>Cambiar estado a un pin, solo funciona con tipo=d (pin digital)</p>
+
+<p>http://localhost:8000/api/?pin=8&amp;accion=1&amp;tipo=d&amp;tablero=1</p>
+
+<p>Devuelve</p>
+
+<pre><code>{"1":{"8":false}}
+</code></pre>
+
+<p>Leer estado de un pin, cambiando tipo=a (análogo), podremos obtener la lectura de un pin análogo</p>
+
+<p>http://localhost:8000/api/?pin=8&amp;accion=0&amp;tipo=d&amp;tablero=1</p>
+
+<p>Devuelve
+    {"1":{"8":false}} En caso de ser digital</p>
+
+<pre><code>{"1":{"0":0.035}} En caso de ser análogo
+</code></pre>
+
+<p>Donde:</p>
+
+<p>pin: numero pin a leer o cambiar estado</p>
+
+<p>acción: 1 = cambia estado a pin 0 = lee estado de pin</p>
+
+<p>tipo: d = digital a = análogo</p>
+
+<p>tablero: número de tablero configurado en db</p>
+
+<p>si tipo = a, acción solo puede ser = 0.</p>
+
+<p>Cambiar estado a 0 (apaga) todos los pins digitales de salida sin importar el tablero</p>
+
+<p>http://localhost:8000/api/?estado=0 </p>
+
+<p>Devuelve</p>
+
+<pre><code>{"1":{"8":false,"9":false},"3":{"8":false, "10":false}}
+</code></pre>
+
+<p>Leer estado todos pins, separandolo por tablero en un diccionario</p>
+
+<p>http://localhsot:8000/api/?estad=1&amp;modo=1&amp;tipo=d</p>
+
+<pre><code>{"1":{"8":true,"10":false}} En caso de pins digitales
+
+{"1":{"0":0.0085,"1":0.0434}} En caso de pins análogos
+</code></pre>
+
+<p>Donde:</p>
+
+<p>estado: 0 = cambia a 0 todos los pines de salida digitales, 1 = lee estado de pines según combinación</p>
+
+<p>modo: i = input o = output</p>
+
+<p>tipo: d = digital a = análogo</p>
+
+<p>si tipo = d, modo solo podrá ser = 1</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/palichis">palichis</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
