@@ -1,3 +1,24 @@
+##############################################################################
+#
+#    arduino module
+#    Copyright (C) 2013 Katarisoft  All Rights Reserved
+#    palichis@katarisoft.com
+#    $Id$
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+##############################################################################
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import threading
@@ -37,8 +58,8 @@ class board():
                     else:
                         pintemp[pin_obj.pin] = self.board.get_pin('a:%s:i'%pin_obj.pin)
                         print "temperature calculate %s"%pin_obj.pin
-                self.tablero_pind[ard.id] = pin
-                self.tablero_pina[ard.id] = pintemp
+                self.tablero_pind[ard.tablero] = pin
+                self.tablero_pina[ard.tablero] = pintemp
                 #print self.tablero_pina
                 #print self.tablero_pind
                 temperatura = threading.Thread(target=self.temperatura)
